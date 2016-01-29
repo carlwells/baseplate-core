@@ -1,4 +1,3 @@
-import "babel-register";
 import express from 'express';
 import expressHbs from 'express-handlebars';
 import auth from 'http-auth';
