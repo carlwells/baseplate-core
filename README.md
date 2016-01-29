@@ -2,7 +2,7 @@
 
 A tool for helping build prototypes and pattern libraries.
 
-The core server heavily borrows from [component-styleguide](https://github.com/webpro/component-styleguide) but is possible simpler in approach as this project tries to keep the amount of client-side structure it imposes to an absolute minumum. Although as a result it does assume a bit more of a directory structure. It's probably very specific to my use-case so you probably want to look at component-styleguide first.
+The core server heavily borrows from [component-styleguide](https://github.com/webpro/component-styleguide) but is possibly simpler in approach as this project tries to keep the amount of client-side structure it imposes to an absolute minumum. Although as a result it does assume a bit more of a directory structure. It's probably very specific to our use-case so you probably want to look at component-styleguide first.
 
 ## Details
 
