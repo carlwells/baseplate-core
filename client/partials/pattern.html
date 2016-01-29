@@ -1,0 +1,19 @@
+{{#with pattern}}
+    <div class="sg-pattern" id="pattern-{{group}}-{{id}}">
+        <h3 class="sg-pattern__title sg-heading">
+            <a href="/patterns/{{group}}/{{id}}" class="sg-anchor">
+                {{label}}
+            </a>
+            <a class="sg-pattern__anchor sg-anchor" href="#pattern-{{group}}-{{id}}">[#]</a>
+        </h3>
+        <div class="sg-pattern__content">
+            {{{content}}}
+        </div>
+
+        {{#if usage}}
+            <div class="sg-usage">
+                <strong>Usage</strong>: {{{usage}}}
+            </div>
+        {{/if}}
+    </div>
+{{/with}}

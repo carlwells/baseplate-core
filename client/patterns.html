@@ -1,0 +1,20 @@
+{{>header}}
+
+<div class="sg-container">
+    {{>toolbar }}
+
+    <div class="sg-patterns">
+        {{#each patternGroups as |patterns|}}
+            <section class="sg-section">
+                <h2 class="sg-section__title sg-heading">
+                    <a href="/patterns/{{@key}}" class="sg-anchor">
+                        {{capitalize @key}}
+                    </a>
+                </h2>
+                {{#each patterns}}
+                    {{>pattern pattern=this}}
+                {{/each}}
+            </section>
+        {{/each}}
+    </div>
+</div>

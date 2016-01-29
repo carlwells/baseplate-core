@@ -1,0 +1,50 @@
+{{#if fontStacks}}
+    <section class="sg-section">
+        <h2 class="sg-section__title sg-heading">Typography</h2>
+
+        {{#each fontStacks}}
+            <div class="sg-font-stack">
+                <h3 class="sg-font-stack__title sg-heading">{{label}}</h3>
+                <div class="sg-font-stack__content">
+                    <h4 class="{{className}}">
+                        Aa Bb Cc Dd Ee Ff Gg Hh Ii Jj Kk Ll Mm Nn Oo Pp Qq Rr Ss Tt Uu
+                        Vv Ww Xx Yy Zz 1 2 3 4 5 6 7 8 9 0 &amp; @ . , ? ! ’ “ ” ( )
+                    </h4>
+                    <p class="{{className}}">
+                        Aa Bb Cc Dd Ee Ff Gg Hh Ii Jj Kk Ll Mm Nn Oo Pp Qq Rr Ss Tt Uu
+                        Vv Ww Xx Yy Zz 1 2 3 4 5 6 7 8 9 0 &amp; @ . , ? ! ’ “ ” ( )
+                    </p>
+                    <p class="{{className}}">Pack my box with five dozen liquor jugs.</p>
+                    <p class="{{className}}">
+                        One morning, when Gregor Samsa woke from <em>troubled</em> dreams,
+                        he found himself transformed in his bed into a horrible vermin.
+                        He lay on his armour-like back, and if he lifted his head a little
+                        he could see his brown belly, slightly domed and divided by arches
+                        into stiff sections. The bedding was hardly able to cover it and
+                        seemed ready to slide off <strong>any moment</strong>. His many legs,
+                        pitifully thin compared with the size of the rest of him, waved about
+                        helplessly as he looked.
+                    </p>
+                    <small>
+                        Alice did not much like keeping so close to her: first, because the Duchess was VERY ugly; and secondly, because she was exactly the right height to rest her chin upon Alice's shoulder, and it was an uncomfortably sharp chin. However, she did not like to be rude, so she bore it as well as she could.
+                    </small>
+                </div>
+                <span class="sg-font-stack__caption">
+                    <span class="sg-font-stack__caption__label">{{family}}</span>
+                    {{#with source}}
+                        <span class="sg-font-stack__caption__meta">
+                            <strong>Source:</strong>
+                            {{#if url}}
+                                <a href="{{url}}">{{label}}</a>
+                            {{else}}
+                                {{label}}
+                            {{/if}}
+                        </span>
+                    {{/with}}
+                </span>
+
+            </div>
+        {{/each}}
+
+    </section>
+{{/if}}
