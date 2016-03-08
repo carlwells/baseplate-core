@@ -1,6 +1,8 @@
-import _ from 'lodash';
-import path from 'path';
-import usageNotes from './usageNotes';
+'use strict';
+
+var _ = require('lodash');
+var path = require('path');
+var usageNotes = require('./usageNotes');
 
 const labelFromSlug = slug => _.capitalize(slug.replace(/-/g, ' '));
 

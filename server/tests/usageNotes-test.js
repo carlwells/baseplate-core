@@ -1,8 +1,8 @@
-import test from 'ava';
-import 'babel-register';
+'use strict';
 
-import tempWrite from 'temp-write';
-import usageNotes from '../lib/usageNotes.js';
+var test = require('ava');
+var tempWrite = require('temp-write');
+var usageNotes = require('../lib/usageNotes.js');
 
 test('usageNotes', function (t) {
     var filepath = tempWrite.sync('this is some test text');

@@ -1,7 +1,7 @@
-import test from 'ava';
-import 'babel-register';
+'use strict';
 
-import swatches from '../lib/swatches.js';
+var test = require('ava');
+var swatches = require('../lib/swatches.js');
 
 test('swatches', function (t) {
     var data = swatches([

@@ -1,6 +1,8 @@
-import path from 'path';
-import keyBy from 'lodash/keyBy';
-import mapValues from 'lodash/mapValues';
+'use strict';
+
+var path = require('path');
+var keyBy = require('lodash/keyBy');
+var mapValues = require('lodash/mapValues');
 
 module.exports = function (files) {
     var keyedFiles = keyBy(files, file => path.basename(file, path.extname(file)));

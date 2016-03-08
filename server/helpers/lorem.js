@@ -1,4 +1,4 @@
-import loremIpsum from 'lorem-ipsum';
+var loremIpsum = require('lorem-ipsum');
 
 module.exports = function (count) {
     return loremIpsum({

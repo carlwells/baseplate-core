@@ -1,3 +1,3 @@
-import times from 'lodash/times';
+var times = require('lodash/times');
 
 module.exports = (count, block) => times(count, i => block.fn(i)).join(' ');
