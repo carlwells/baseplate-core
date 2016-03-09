@@ -8,7 +8,9 @@ const labelFromSlug = slug => _.capitalize(slug.replace(/-/g, ' '));
 
 const customOrdering = (ordering, items) => {
     let o = {};
-    ordering.forEach(k => o[k] = items[k]);
+    ordering.forEach(function (k) {
+        o[k] = items[k];
+    });
     return o;
 };
 
