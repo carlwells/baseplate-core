@@ -1,6 +1,6 @@
-import fs from 'fs';
-import path from 'path';
-import memoize from 'lodash/memoize';
+var fs = require('fs');
+var path = require('path');
+var memoize = require('lodash/memoize');
 
 module.exports = memoize(function (src) {
     var filepath = path.resolve(process.cwd(), src);

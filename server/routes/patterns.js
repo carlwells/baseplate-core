@@ -1,11 +1,13 @@
-import _ from 'lodash';
-import path from 'path';
-import express from 'express';
+'use strict';
 
-import collections from '../lib/collections';
-import helpers from '../helpers';
+var _ = require('lodash');
+var path = require('path');
+var express = require('express');
 
-const router = new express.Router({
+var collections = require('../lib/collections');
+var helpers = require('../helpers');
+
+var router = new express.Router({
     mergeParams: true
 });
 
@@ -20,7 +22,7 @@ function getPatterns(locals) {
     });
 }
 
-router.get('/', (req, res) => {
+router.get('/', function (req, res) {
     let locals = res.app.locals;
     res.render(path.resolve(locals.clientDir, 'patterns'), {
         patternGroups: getPatterns(locals)
@@ -37,7 +39,7 @@ router.get('/:group', function (req, res) {
     });
 });
 
-router.get('/:group/:id?', (req, res) => {
+router.get('/:group/:id?', function (req, res) {
     let locals = res.app.locals;
     let patterns = getPatterns(locals);
     let pattern = _.chain(patterns)

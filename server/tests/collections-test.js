@@ -1,7 +1,7 @@
-import test from 'ava';
-import 'babel-register';
+'use strict';
 
-import collections from '../lib/collections.js';
+var test = require('ava');
+var collections = require('../lib/collections.js');
 
 test('collections#pages', t => {
     let noop = () => {};

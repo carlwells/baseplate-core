@@ -1,7 +1,7 @@
-import test from 'ava';
-import 'babel-register';
+'use strict';
 
-import hbsHelpers from '../helpers';
+var test = require('ava');
+var hbsHelpers = require('../helpers');
 
 test('hbsHelpers#getOrElse', function (t) {
     t.plan(4);

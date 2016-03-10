@@ -1,9 +1,11 @@
-import express from 'express';
-import find from 'lodash/find';
-import path from 'path';
+'use strict';
 
-import collections from '../lib/collections';
-import helpers from '../helpers';
+var express = require('express');
+var find = require('lodash/find');
+var path = require('path');
+
+var collections = require('../lib/collections');
+var helpers = require('../helpers');
 
 var router = new express.Router({
     mergeParams: true

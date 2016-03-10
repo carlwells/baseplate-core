@@ -1,3 +1,3 @@
-import capitalize from 'lodash/capitalize';
+var capitalize = require('lodash/capitalize');
 
 module.exports = str => capitalize(str);

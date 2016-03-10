@@ -1,13 +1,15 @@
-import path from 'path';
-import express from 'express';
-import swatches from '../lib/swatches';
-import styleguideDefaults from '../styleguide-defaults.json';
+'use strict';
 
-const router = new express.Router({
+var path = require('path');
+var express = require('express');
+var swatches = require('../lib/swatches');
+var styleguideDefaults = require('../styleguide-defaults.json');
+
+var router = new express.Router({
     mergeParams: true
 });
 
-router.get('/', (req, res) => {
+router.get('/', function (req, res) {
     let locals = req.app.locals;
     let styleguide = Object.assign(
         styleguideDefaults,

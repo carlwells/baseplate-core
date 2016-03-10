@@ -1,8 +1,8 @@
-import test from 'ava';
-import 'babel-register';
+'use strict';
 
-import tempWrite from 'temp-write';
-import templateData from '../lib/templateData.js';
+var test = require('ava');
+var tempWrite = require('temp-write');
+var templateData = require('../lib/templateData.js');
 
 test('templateData', t => {
     var files = [

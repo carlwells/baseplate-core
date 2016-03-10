@@ -1,7 +1,7 @@
 'use strict';
 
-const _ = require('lodash');
-const color = require('color');
+var _ = require('lodash');
+var color = require('color');
 
 module.exports = function (swatches) {
     return _.map(swatches, function (swatch) {

@@ -1,5 +1,7 @@
-import fs from 'fs';
-import showdown from 'showdown';
+'use strict';
+
+var fs = require('fs');
+var showdown = require('showdown');
 
 const converter = new showdown.Converter();
 
