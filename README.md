@@ -1,5 +1,7 @@
 # baseplate-core
 
+[![Circle CI](https://circleci.com/gh/MadeHQ/baseplate-core/tree/master.svg?style=svg)](https://circleci.com/gh/MadeHQ/baseplate-core/tree/master)
+
 A tool for helping build prototypes and pattern libraries.
 
 Inspired heavily by [component-styleguide](https://github.com/webpro/component-styleguide). This is still very specific to our use-case so you probably want to look at component-styleguide first.
