@@ -1,6 +1,6 @@
 {
   "name": "baseplate-core",
-  "version": "1.1.0",
+  "version": "1.2.0-beta.0",
   "description": "Baseplate core. A tool for helping build prototypes and pattern libraries.",
   "author": "Made Media Ltd. <developers@mademedia.co.uk> (made.media)",
   "contrbutors": [
@@ -47,9 +47,9 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "ava": "0.12.0",
+    "ava": "0.13.0",
     "clean-css": "3.4.10",
-    "nsp": "2.2.0",
+    "nsp": "2.2.1",
     "pre-commit": "1.1.2",
     "temp-write": "2.1.0",
     "uglifyjs": "2.4.10",

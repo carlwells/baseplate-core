@@ -1,18 +1,18 @@
-{{>header}}
+{{> baseplate/header}}
 
 <div class="sg-container">
-    {{>toolbar }}
+    {{> baseplate/toolbar }}
 
     <div class="sg-patterns">
-        {{#each patternGroups as |patterns|}}
+        {{#each groups as |group|}}
             <section class="sg-section">
                 <h2 class="sg-section__title sg-heading">
-                    <a href="/patterns/{{@key}}" class="sg-anchor">
+                    <a href="{{../basePath}}/{{@key}}" class="sg-anchor">
                         {{capitalize @key}}
                     </a>
                 </h2>
-                {{#each patterns}}
-                    {{>pattern pattern=this}}
+                {{#each group}}
+                    {{> baseplate/pattern pattern=this basePath=../../basePath}}
                 {{/each}}
             </section>
         {{/each}}

@@ -8,9 +8,11 @@ var glob = require('glob');
 var routes = require('./routes');
 var helpers = require('./helpers');
 var templateData = require('./lib/templateData');
-var values = require('lodash/values');
 var includes = require('lodash/includes');
 var assign = require('lodash/assign');
+var dropRight = require('lodash/dropRight');
+var last = require('lodash/last');
+var flatten = require('lodash/flatten');
 
 var AUTH_USER = process.env.AUTH_USER;
 var AUTH_PASSWORD = process.env.AUTH_PASSWORD;
@@ -27,7 +29,7 @@ if (includes(['production'], process.env.NODE_ENV)) {
     app.use(auth.connect(basicAuth));
 }
 
-app.use(require('morgan')('dev'));
+// app.use(require('morgan')('dev'));
 app.use(require('compression')());
 app.use(require('errorhandler')());
 
@@ -36,37 +38,57 @@ module.exports = function (styleguideOptions, options) {
         ext: 'html',
         port: process.env.PORT || 4444,
         staticPaths: ['static', 'examples'],
-        ordering: undefined,
-        showUsage: true,
         dataDir: 'data',
         componentsDir: 'components',
         viewsDir: 'views',
-        layoutTmpl: 'layout'
+        layoutTmpl: 'layout',
+        sections: [{
+            type: 'list',
+            title: 'Pages',
+            path: '/pages',
+            directory: 'pages',
+            partials: false
+        }, {
+            type: 'collection',
+            title: 'Patterns',
+            path: '/patterns',
+            directory: 'patterns',
+            partials: true,
+            showUsage: true,
+            ordering: null
+        }]
     }, options);
 
     const viewsDir = path.resolve(process.cwd(), config.viewsDir);
     const clientDir = path.resolve(path.resolve(__dirname, '..'), 'client');
     const componentsDir = path.resolve(process.cwd(), config.componentsDir);
-    const pagesDir = path.resolve(componentsDir, 'pages');
 
-    const partials = {
-        layout: path.resolve(clientDir, 'partials'),
-        layoutUser: path.resolve(viewsDir, 'partials'),
-        patterns: path.resolve(componentsDir, 'patterns')
-    };
+    const defaultPartialsDirs = [
+        {namespace: 'baseplate', dir: path.resolve(clientDir, 'partials')},
+        {namespace: 'partials', dir: path.resolve(viewsDir, 'partials')}
+    ];
+
+    const partialsDirs = config.sections
+        .filter(item => item.partials === true)
+        .map(function (item) {
+            return {
+                namespace: item.directory,
+                dir: path.resolve(componentsDir, item.directory)
+            };
+        });
 
     const hbs = expressHbs.create({
         defaultLayout: config.layoutTmpl,
         layoutsDir: viewsDir,
         extname: `.${config.ext}`,
-        partialsDir: values(partials),
+        partialsDir: defaultPartialsDirs.concat(partialsDirs),
         helpers: helpers
     });
 
     app.locals.config = config;
     app.locals.clientDir = clientDir;
     app.locals.styleguideOptions = styleguideOptions;
-    app.locals.partials = partials;
+
     app.locals.tmplData = (function () {
         let dataDir = path.resolve(process.cwd(), config.dataDir);
         let dataFiles = glob.sync(`${dataDir}/*.json`);
@@ -85,25 +107,39 @@ module.exports = function (styleguideOptions, options) {
     });
 
     return new Promise(function (resolve) {
-        return Promise.all([
-            hbs.getTemplates(pagesDir),
-            hbs.getTemplates(partials.patterns),
-            hbs.getPartials()
-        ]).then(function (results) {
-            let pages = results[0];
-            let patterns = results[1];
-            let partials = results[2];
+        app.use('/', routes.styleguide);
 
-            app.locals.templates = {
-                pages,
-                patterns,
-                partials
-            };
+        var promises = config.sections.map(section => {
+            let tmpls = hbs.getTemplates(path.resolve(componentsDir, section.directory));
+            return Promise.all([tmpls].concat([hbs.getPartials()])).then(function (results) {
+                var resultItems = flatten(dropRight(results));
+                var resultPartials = last(results);
 
-            app.use('/', routes.styleguide);
-            app.use('/pages', routes.pages);
-            app.use('/patterns', routes.patterns);
-        }).then(function () {
+                let route;
+                if (section.type === 'collection') {
+                    route = routes.generateCollection(
+                        section,
+                        path.resolve(componentsDir, section.directory),
+                        resultItems[0],
+                        resultPartials,
+                        app.locals.tmplData,
+                        clientDir
+                    );
+                } else {
+                    route = routes.generateList(
+                        section,
+                        resultItems[0],
+                        resultPartials,
+                        app.locals.tmplData,
+                        clientDir
+                    );
+                }
+
+                app.use(section.path, route);
+            });
+        });
+
+        return Promise.all(promises).then(function () {
             resolve({
                 app: app,
                 start: function () {
