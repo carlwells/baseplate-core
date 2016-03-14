@@ -2,7 +2,7 @@
 
 A tool for helping build prototypes and pattern libraries.
 
-The core server heavily borrows from [component-styleguide](https://github.com/webpro/component-styleguide) but is possibly simpler in approach as this project tries to keep the amount of client-side structure it imposes to an absolute minumum. Although as a result it does assume a bit more of a directory structure. It's probably very specific to our use-case so you probably want to look at component-styleguide first.
+Inspired heavily by [component-styleguide](https://github.com/webpro/component-styleguide). This is still very specific to our use-case so you probably want to look at component-styleguide first.
 
 ## Details
 
@@ -12,7 +12,7 @@ The core server heavily borrows from [component-styleguide](https://github.com/w
 
 ### Helpers
 
-Handlebars is a logicless templating engine so you need helpers to do anyting interesting in tehm. A set of helpers are provided in the templates to make prototyping as simple as possible.
+Handlebars is a logicless templating engine so you need helpers to do anything interesting in them. A set of helpers are provided in the templates to make prototyping as simple as possible.
 
 | Helper | Description
 |---|---|---|
@@ -27,6 +27,15 @@ Handlebars is a logicless templating engine so you need helpers to do anyting in
 |`{{loremWords min max}}`| Lorem ipsum generator. Returns random words between `min` and `max` |
 |`{{inlineFile 'path/to/file.ext'}}`| Returns the contents of a file |
 
+### Common Variables
+
+A handful of root level common variables are exposed for use in templates. They are only available in **listings** as they are mostly used to get the current URL. If you need this data in a partial then pass it in as an argument.
+
+| Variable | Description
+|---|---|---|
+| `{{@root.link}}` | Relative link to the current page
+| `{{@root.absoluteLink}}` | Absolute link to the current page
+
 ### Partials
 
 Everything under `components/patterns` is automatically registered as a partial. For example `{{> objects/icon}}` will render `components/patterns/objects/icon.html`). This is powerful for making components comprised of other components.
@@ -39,10 +48,12 @@ You can add markdown files in the `patterns/` directory and the contents will be
 
 All JSON files under `data/` are concatenated into one context for the templates. E.g. `users.json` containing `[]` and `profile.json` containing `{}` will result in the following data for the templates:
 
-    {
-       "users": [],
-       "profile": {}
-    }
+```
+{
+   "users": [],
+   "profile": {}
+}
+```
 
 Now, the `{{#users}}` collection can be iterated over in any template.
 
@@ -52,13 +63,13 @@ By default anything under `/static` will be exposed by the server under `/static
 
 ## Installation Steps
 
-If you don't want to start with the example app, or just want to start from scratch you can follow these steps.
+If you don't want to start with the example app, need to configure some custom options, or just want to start from scratch you should follow these steps:
 
 ### 1. Install baseplate-core
 
 ```
 npm init
-npm install baseplate-core --save
+npm install MadeHQ/baseplate-core --save
 ```
 
 ### 2. Structure
@@ -83,11 +94,62 @@ Create a directory structure similar to this:
     └── layout.html
 ```
 
-### 3. Layout
+### 3. Components
+
+There are two types of component directories: **listings** which are a simple list of items (used by default for pages) and **collections** which display items on a single page grouped by folder (used by default for patterns).
+
+You can configure any custom sections you want in `baseplate-config.json`, by adding a `sections` config.
+
+```
+{
+    "sections": [{
+        "type": "list",
+        "title": "Pages",
+        "path": "/pages",
+        "directory": "pages",
+        "partials": false
+    }, {
+        "type": "collection",
+        "title": "Patterns",
+        "path": "/patterns",
+        "directory": "patterns",
+        "partials": true,
+        "showUsage": true,
+        "ordering": [
+            "base",
+            "objects",
+            "modules",
+            "collections"
+        ]
+    }, {
+        "type": "collection",
+        "title": "Widgets",
+        "path": "/widgets",
+        "directory": "widgets",
+        "showUsage": true,
+        "partials": true
+    }]
+}
+```
+
+Available options are as follows:
+
+| Option | Description
+|---|---|---|
+|`type` | Type of view: either `list` or `collection` |
+|`title` | Navigation title, shown in toolbar |
+|`path` | URL path |
+|`directory` | Directory, relative to `components/` |
+|`partials` | Should these items be available as partials?. If so they will be namespaced under the directory name, e.g. `{{> patterns/a/b }}` |
+|`showUsage` | If enabled and there is a `.md` file with the same name as the file (e.g., `example.html` and `example.md` then usage notes will be shown alongside the item. Only available for **`collection`** type. |
+|`ordering ` | By default collections will be ordered by directory name, if you want to customise the order, or exclude a directory from listings (but still have it available as partials) then a custom ordering will let you do this. Only available for **`collection`** type. |
+
+
+### 4. Layout
 
 In order to display anything you need to add a `layout.html` file under `views/`.
 
-Three snippets are required: `{{baseplateStyles}}` which returns a link to the pattern library styles and `{{baseplateScripts}}` which returns a link to the pattern library styles and `{{{body}}}` which renders the current view. Otherwise you are free to provide any html you like.
+Three snippets are required: `{{> baseplate/styles}}` which returns a link to the pattern library styles and `{{> baseplate/scripts}}` which returns a link to the pattern library styles and `{{{body}}}` which renders the current view. Otherwise you are free to provide any html you like.
 
 For example:
 
@@ -98,21 +160,20 @@ For example:
     <meta charset="utf-8">
     <title>My Project</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    {{> baseplateStyles}}
+    {{> baseplate/styles}}
     <link rel="stylesheet" href="/static/stylesheets/my-styles.css"/>
 </head>
 <body>
     {{{body}}}
-    {{> baseplateScripts}}
+    {{> baseplate/scripts}}
     <script src="/static/javascripts/my-app.js" async></script>
 </body>
 </html>
 ```
 
-**Custom partials**: You can provide custom partials under `views/partials` this is mostly useful if you want to break your layout template into smaller parts.
+**Custom partials**: You can provide custom partials under `views/partials` which are then available in your layout as `{{> partials/nameOfPartial }}`. This is mostly useful if you want to break your layout template into smaller parts.
 
-
-### 4. Start
+### 5. Start
 
 Add a `server.js` using the following template.
 
@@ -127,10 +188,6 @@ baseplate(styleguide, config).then(function (server) {
 ```
 
 And run it with: `npm start`. The example app uses `nodemon` instead so you may want to use that as well: `nodemon -e js,html -- server.js`
-
-#### 5. Build Components
-
-Baseplate (currently) assumes two directories: `patterns` and `pages`. Patterns should be organised into subdirectories, e.g. `patterns/base/ etc.`, and are rendered in a single view. Pages is a flat directory, e.g. `pages/example-page.html`, and are displayed as standalone views.
 
 ## API
 
