@@ -3,9 +3,9 @@
         <label for="sg-section-switcher" class="sg-visuallyhidden">Jump to section:</label>
         <select id="sg-section-switcher" class="sg-jump-nav__select" name="sg-section-switcher">
             <option value="" selected>Jump to&hellip;</option>
-            {{#each patternGroups as |patterns|}}
+            {{#each groups as |patternGroup|}}
                 <optgroup label="{{capitalize @key}}">
-                    {{#each patterns}}
+                    {{#each patternGroup}}
                         <option value="#pattern-{{group}}-{{id}}">{{label}}</option>
                     {{/each}}
                 </optgroup>
