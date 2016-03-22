@@ -32,22 +32,20 @@ module.exports = function (sectionConfig, directory, items, partials, data, clie
 
     router.get('/:group', function (req, res) {
         let group = {};
-        let locals = res.app.locals;
         let collections = getCollections();
         group[req.params.group] = find(collections, (_, key) => key === req.params.group);
-        res.render(path.resolve(locals.clientDir, 'collection'), {
+        res.render(path.resolve(clientDir, 'collection'), {
             basePath: sectionConfig.path,
             groups: group
         });
     });
 
     router.get('/:group/:id?', function (req, res) {
-        let locals = res.app.locals;
         let collections = getCollections();
-        let match = find(collections, (_, key) => key.toLowerCase() === req.params.group);
-        let item = find(match, x => x.id === req.params.id);
-        if (item) {
-            res.render(path.resolve(locals.clientDir, 'standalone'), {item: item});
+        let group = find(collections, (_, key) => key === req.params.group);
+        let result = find(group, x => x.id === req.params.id);
+        if (result) {
+            res.render(path.resolve(clientDir, 'standalone'), result);
         } else {
             res.sendStatus(404);
         }
