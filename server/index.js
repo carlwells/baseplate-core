@@ -19,7 +19,11 @@ var AUTH_PASSWORD = process.env.AUTH_PASSWORD;
 
 var app = express();
 
-if (includes(['production'], process.env.NODE_ENV)) {
+if (
+    includes(['production'], process.env.NODE_ENV) &&
+    process.env.AUTH_USER &&
+    process.env.AUTH_PASSWORD
+) {
     let basicAuth = auth.basic({
         realm: 'Preview'
     }, function (username, password, callback) {
@@ -29,7 +33,7 @@ if (includes(['production'], process.env.NODE_ENV)) {
     app.use(auth.connect(basicAuth));
 }
 
-// app.use(require('morgan')('dev'));
+app.use(require('morgan')('dev'));
 app.use(require('compression')());
 app.use(require('errorhandler')());
 
