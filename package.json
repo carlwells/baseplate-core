@@ -22,7 +22,7 @@
     "clientJs": "cd client/static/ && uglifyjs baseplate.js -o baseplate.min.js",
     "clientCss": "cd client/static/ && cleancss baseplate.css -o baseplate.min.css",
     "build": "npm run clientJs && npm run clientCss",
-    "lint": "xo --space 4 -- server/{*,**/*}.js client/*.js",
+    "lint": "xo -- server/{*,**/*}.js client/*.js",
     "requiresafe": "nsp check",
     "test": "npm run lint && ava",
     "posttest": "npm run requiresafe"
@@ -30,6 +30,12 @@
   "pre-commit": [
     "lint"
   ],
+  "xo": {
+    "space": 4,
+    "rules": {
+      "xo/filename-case": ["error", "kebabCase"]
+    }
+  },
   "dependencies": {
     "color": "0.11.1",
     "compression": "1.6.1",
@@ -53,6 +59,6 @@
     "pre-commit": "1.1.2",
     "temp-write": "2.1.0",
     "uglifyjs": "2.4.10",
-    "xo": "0.14.0"
+    "xo": "0.15.0"
   }
 }
