@@ -1,14 +1,15 @@
 {
-  "name": "baseplate-core",
+  "name": "baseplate-cored",
   "main": "server/index.js",
   "version": "1.7.4",
   "license": "MIT",
-  "description": "A tool for building prototypes and pattern libraries.",
+  "description": "A tool for building prototypes and pattern libraries. Based on baseplate-core",
   "author": "Made Media Ltd. <developers@mademedia.co.uk> (made.media)",
   "contrbutors": [
-    "David Rapson <david@davidrapson.co.uk> (davidrapson.co.uk)"
+    "David Rapson <david@davidrapson.co.uk> (davidrapson.co.uk)",
+    "Carl Wells <carl@fivetotwelve.com> (fivetotwelve.com)",
   ],
-  "repository": "github:MadeHQ/baseplate-core",
+  "repository": "github:carlwells/baseplate-cored",
   "engines": {
     "node": ">=4.0.0"
   },
